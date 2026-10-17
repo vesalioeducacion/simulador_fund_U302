@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pensamiento Crítico y Recolección de Datos | UCCuyo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Outfit y JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f1f6eb',
+                            100: '#e3edcf',
+                            200: '#c7dba0',
+                            300: '#abc971',
+                            400: '#8eb742',
+                            500: '#436600',
+                            600: '#395700',
+                            700: '#2f4700',
+                            800: '#253800',
+                            900: '#1a2800'
+                        },
+                        uccuyo: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#436600',
+                            700: '#395700',
+                            800: '#2f4700',
+                            900: '#1a2800'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f7f9f6;
+        }
+        .font-mono-clinical {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Paleta Institucional UCCuyo (Verde Oliva) */
+        .text-accent { color: #436600; }
+        .bg-accent { background-color: #436600; }
+        .bg-accent-hover:hover { background-color: #324d00; }
+        .bg-accent-light { background-color: #f1f6eb; }
+        .border-accent { border-color: #436600; }
+
+        .text-primary { color: #436600; }
+        .bg-primary { background-color: #436600; }
+        .bg-primary-dark { background-color: #324d00; }
+        .border-primary { border-color: #436600; }
+
+        .focus-accent:focus {
+            border-color: #436600;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 102, 0, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .card-hover {
+            transition: all 0.25s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -4px rgba(67, 102, 0, 0.12);
+        }
+
+        /* Animación de pulso para el monitor multiparamétrico */
+        @keyframes ecg-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(1.06); }
+        }
+        .animate-ecg {
+            animation: ecg-pulse 0.85s infinite ease-in-out;
+        }
+        /* Barrido de onda del monitor */
+        @keyframes wave-sweep {
+            0% { stroke-dashoffset: 400; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .ecg-line {
+            stroke-dasharray: 400;
+            animation: wave-sweep 3s linear infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 antialiased">
+
+    <!-- Cabecera Institucional UCCuyo (FE) -->
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    FE
+                </div>
+                <div>
+                    <h1 class="text-base sm:text-lg font-bold text-gray-800 tracking-wide uppercase">PENSAMIENTO CRÍTICO Y RECOLECCIÓN DE DATOS</h1>
+                    <p class="text-xs text-gray-500 font-semibold">Fundamentos de Enfermería (Facultad de Cs. Médicas - UCCuyo)</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#f1f6eb] text-[#436600] border border-[#436600]/20">
+                    <i class="fa-solid fa-graduation-cap"></i> Curso de Ingreso
+                </span>
+
+                
+
+                <!-- Botón Guía de Uso -->
+                <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:opacity-90 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Guía de Uso
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal con navegación lateral -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Menú de Navegación Lateral -->
+        <nav class="w-full lg:w-64 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit">
+            <button onclick="switchTab('tab-inicio')" id="btn-tab-inicio" class="bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition flex items-center gap-2.5 shadow-xs">
+                <i class="fa-solid fa-compass text-sm text-white"></i>
+                <span>Presentación General</span>
+            </button>
+            <button onclick="switchTab('mod1')" id="btn-mod1" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-microscope text-sm text-[#436600]"></i>
+                <span>1. Método y Valoración</span>
+            </button>
+            <button onclick="switchTab('mod2')" id="btn-mod2" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-ruler-combined text-sm text-[#436600]"></i>
+                <span>2. Datos Objetivos</span>
+            </button>
+            <button onclick="switchTab('mod3')" id="btn-mod3" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-comment-medical text-sm text-[#436600]"></i>
+                <span>3. Datos Subjetivos</span>
+            </button>
+            <button onclick="switchTab('mod4')" id="btn-mod4" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-stethoscope text-sm text-[#436600]"></i>
+                <span>4. Observación y Entrevista</span>
+            </button>
+
+            <!-- Separador Estaciones de Simulación -->
+            <div class="hidden lg:block pt-2 pb-1 border-t border-gray-100">
+                <span class="text-[10.5px] font-bold uppercase tracking-wider text-teal-800 px-3">Estaciones de Simulación</span>
+            </div>
+
+            <button onclick="switchTab('reto1')" id="btn-reto1" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-layer-group text-sm text-teal-700"></i>
+                <span>Reto 1: Triaje de Datos</span>
+            </button>
+            <button onclick="switchTab('reto2')" id="btn-reto2" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-hand-holding-medical text-sm text-teal-700"></i>
+                <span>Reto 2: Examen de Sentidos</span>
+            </button>
+            <button onclick="switchTab('reto3')" id="btn-reto3" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5">
+                <i class="fa-solid fa-wave-square text-sm text-rose-600"></i>
+                <span>Reto 3: Shock Room</span>
+            </button>
+
+            <!-- Tarjeta lateral de relevancia clínica -->
+            <div class="hidden lg:block mt-4 pt-3 border-t border-gray-100 bg-[#f1f6eb]/80 p-3 rounded-xl border border-[#436600]/20 text-xs text-slate-700 space-y-1">
+                <div class="font-bold text-[#436600] flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+                    <i class="fa-solid fa-brain"></i> Pensamiento Crítico
+                </div>
+                <p class="leading-relaxed text-gray-600 text-[11.5px]">
+                    El profesional de enfermería no actúa por mera intuición ni al azar; observa con rigor, contrasta datos objetivos y subjetivos, y toma decisiones fundamentadas en evidencias científicas.
+                </p>
+            </div>
+        </nav>
+
+        <!-- Área de Contenido Principal -->
+        <section class="flex-1 min-w-0">
+
+            <!-- ================= PRESENTACIÓN GENERAL ================= -->
+            <div id="tab-inicio" class="tab-content active space-y-6">
+                <!-- Hero institucional -->
+                <div class="bg-gradient-to-br from-white to-[#f1f6eb] rounded-2xl p-6 sm:p-8 border border-gray-200/80 shadow-sm relative overflow-hidden">
+                    <div class="absolute right-0 top-0 translate-x-10 -translate-y-10 w-52 h-52 bg-[#436600]/10 rounded-full pointer-events-none"></div>
+                    <div class="max-w-2xl relative z-10 space-y-4">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white border border-[#436600]/30 text-[#436600] shadow-xs">
+                            <i class="fa-solid fa-graduation-cap"></i> Curso de Ingreso • FCM UCCuyo
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+                            Pensamiento Crítico y Recolección de Datos en la Valoración de Enfermería
+                        </h2>
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                            Bienvenido al simulador formativo de <strong>Fundamentos de Enfermería</strong>. La etapa de <strong>Valoración</strong> constituye la piedra angular del Proceso de Atención de Enfermería (PAE). En este simulador ejercitarás el pensamiento crítico discriminando con rigor entre <strong>datos objetivos</strong> (medibles y reproducibles) y <strong>datos subjetivos</strong> (la vivencia del paciente registrada entre comillas), dominando la observación sistemática y la entrevista terapéutica.
+                        </p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="switchTab('mod1')" class="bg-accent hover:opacity-90 text-white font-semibold px-5 py-2.5 rounded-xl shadow-sm text-xs sm:text-sm transition flex items-center gap-2">
+                                <span>Iniciar Módulo 1: Método y PAE</span> <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="switchTab('reto1')" class="bg-white hover:bg-gray-50 text-[#436600] border border-[#436600]/30 font-semibold px-5 py-2.5 rounded-xl shadow-xs text-xs sm:text-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-layer-group text-[#436600]"></i> Ir a Estaciones Prácticas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4 Bloques Temáticos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div onclick="switchTab('mod1')" class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs card-hover cursor-pointer space-y-2">
+                        <div class="w-10 h-10 rounded-xl bg-[#f1f6eb] text-[#436600] flex items-center justify-center font-bold text-base">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-900">1. Método Científico y Valoración</h3>
+                        <p class="text-gray-500 text-xs leading-relaxed">El PAE como sistema estructurado, flexible y dinámico. Pensamiento crítico frente a la rutina y fuentes de información (primaria y secundarias).</p>
+                    </div>
+
+                    <div onclick="switchTab('mod2')" class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs card-hover cursor-pointer space-y-2">
+                        <div class="w-10 h-10 rounded-xl bg-[#f1f6eb] text-[#436600] flex items-center justify-center font-bold text-base">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-900">2. Datos Objetivos</h3>
+                        <p class="text-gray-500 text-xs leading-relaxed">Signos cuantificables, medibles y reproducibles con instrumentos biomédicos (PA, T°, FC, FR, SatO₂, piel y estudios complementarios).</p>
+                    </div>
+
+                    <div onclick="switchTab('mod3')" class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs card-hover cursor-pointer space-y-2">
+                        <div class="w-10 h-10 rounded-xl bg-[#f1f6eb] text-[#436600] flex items-center justify-center font-bold text-base">
+                            <i class="fa-solid fa-comment-medical"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-900">3. Datos Subjetivos</h3>
+                        <p class="text-gray-500 text-xs leading-relaxed">Vivencias, percepciones y síntomas internos indispensables para el cuidado humanizado. Norma ética de registro textual entre comillas (" ").</p>
+                    </div>
+
+                    <div onclick="switchTab('mod4')" class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs card-hover cursor-pointer space-y-2">
+                        <div class="w-10 h-10 rounded-xl bg-[#f1f6eb] text-[#436600] flex items-center justify-center font-bold text-base">
+                            <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-gray-900">4. Observación y Entrevista</h3>
+                        <p class="text-gray-500 text-xs leading-relaxed">Los 4 sentidos clínicos (vista, oído, tacto, olfato) y la comunicación asertiva con técnicas de reformulación terapéutica.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENIDOS DETALLADOS POR MÓDULOS Y RETOS -->
+            <section id="mod1" class="tab-content space-y-6">
+            <!-- Banner de Bienvenida del Módulo 1 -->
+            <div class="bg-gradient-to-r from-uccuyo-800 via-uccuyo-700 to-sky-700 rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-sky-200 text-xs font-semibold mb-3 backdrop-blur-sm">
+                        <i class="fa-solid fa-Compass"></i> Módulo Formativo 01 • Fundamentos del Cuidado
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+                        El Método Científico en el PAE y la Etapa de Valoración
+                    </h2>
+                    <p class="text-sky-100 text-sm sm:text-base leading-relaxed">
+                        El <strong>Proceso de Atención de Enfermería (PAE)</strong> no es un recetario rígido ni una lista mecánica de tareas. Es la aplicación viva del <strong>método científico</strong> en la práctica clínica: un sistema estructurado, flexible y dinámico que exige <strong>pensamiento crítico</strong> constante.
+                    </p>
+                </div>
+                <i class="fa-solid fa-brain text-9xl text-white/10 absolute -right-4 -bottom-4 pointer-events-none"></i>
+            </div>
+
+            <!-- Tarjetas Comparativas: Pensamiento Crítico vs Actuación al Azar -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Columna 1: El PAE Dinámico -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-sky-100 text-uccuyo-600 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-arrows-spin"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Método Estructurado, Flexible y Dinámico</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            El estado de salud de una persona evoluciona minuto a minuto. Por eso, el PAE se adapta a las respuestas cambiantes del paciente en lugar de aplicar fórmulas estáticas.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-700">
+                        <div class="font-bold text-uccuyo-700 mb-1"><i class="fa-solid fa-check-double mr-1"></i>Clave Académica UCCuyo:</div>
+                        Nunca es un protocolo automático; requiere personalizar cada intervención según los datos recolectados.
+                    </div>
+                </div>
+
+                <!-- Columna 2: Rol del Pensamiento Crítico -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">Pensamiento Crítico vs. Intuición o Azar</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            El profesional de enfermería <strong>no actúa por mera intuición, rutina ni al azar</strong>. Observa con rigor, analiza la información, razona clínicamente y toma decisiones fundamentadas en <strong>evidencias científicas</strong>.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <div class="bg-rose-50 border border-rose-200 text-rose-800 p-2.5 rounded-lg">
+                            <span class="font-bold block"><i class="fa-solid fa-xmark mr-1"></i>Sin rigor:</span>
+                            Suponer, adivinar o actuar por costumbre sin verificar.
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-2.5 rounded-lg">
+                            <span class="font-bold block"><i class="fa-solid fa-check mr-1"></i>Con rigor:</span>
+                            Analizar, contrastar datos y decidir con base científica.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna 3: La Valoración como Piedra Angular -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center text-xl mb-4">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">La Valoración: Piedra Angular del PAE</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                            Es la primera etapa del PAE y su cimiento fundamental. Es un <strong>proceso organizado, sistemático y continuo</strong>: comienza desde el primer contacto visual y verbal con el paciente y se mantiene activo durante todas las demás etapas del cuidado.
+                        </p>
+                    </div>
+                    <div class="bg-indigo-50 p-3.5 rounded-xl border border-indigo-200 text-xs text-indigo-900">
+                        <i class="fa-solid fa-circle-info mr-1 text-indigo-600"></i>
+                        Si la recolección de datos en la Valoración es incompleta o errónea, el Diagnóstico y la Planificación posterior perderán validez clínica.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explorador Interactivo de Fuentes de Información en la Valoración -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-uccuyo-600">Explorador Interactivo</span>
+                        <h3 class="text-xl font-bold text-slate-800 mt-0.5">Fuentes de Información en la Valoración de Enfermería</h3>
+                        <p class="text-sm text-slate-600">Haz clic en cada fuente para analizar su rol clínico en la obtención de datos.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="selectSource('primaria')" id="btn-src-primaria" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-uccuyo-600 text-white shadow-sm transition">
+                            <i class="fa-solid fa-user-check mr-1.5"></i>1. Fuente Primaria (El Paciente)
+                        </button>
+                        <button onclick="selectSource('familia')" id="btn-src-familia" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                            <i class="fa-solid fa-users mr-1.5"></i>2. Familia y Acompañantes
+                        </button>
+                        <button onclick="selectSource('hc')" id="btn-src-hc" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                            <i class="fa-solid fa-folder-open mr-1.5"></i>3. Historia Clínica
+                        </button>
+                        <button onclick="selectSource('entorno')" id="btn-src-entorno" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                            <i class="fa-solid fa-hospital-user mr-1.5"></i>4. El Entorno
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel Dinámico de Fuente Seleccionada -->
+                <div id="source-detail-box" class="mt-5 bg-sky-50/70 border border-sky-200 rounded-xl p-5 transition-all">
+                    <!-- Rellenado dinámicamente vía JS (por defecto Fuente Primaria) -->
+                </div>
+            </div>
+
+            <!-- Botón de Avance -->
+            <div class="flex justify-end">
+                <button onclick="switchTab('mod2')" class="px-6 py-3 rounded-xl bg-uccuyo-600 hover:bg-uccuyo-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2">
+                    <span>Explorar Módulo 2: Datos Objetivos</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+            <section id="mod2" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-sky-800 to-teal-700 rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-teal-100 text-xs font-semibold mb-3">
+                        <i class="fa-solid fa-ruler-combined"></i> Módulo Formativo 02 • Evidencia Medible y Verificable
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+                        Datos Objetivos en la Valoración Clínica
+                    </h2>
+                    <p class="text-sky-100 text-sm sm:text-base leading-relaxed">
+                        Son aquellos datos <strong>verificables, medibles y cuantificables</strong> obtenidos a través de la exploración física, la observación sistemática o el uso de <strong>instrumentos biomédicos</strong>.
+                    </p>
+                </div>
+                <i class="fa-solid fa-heart-pulse text-9xl text-white/10 absolute -right-4 -bottom-4 pointer-events-none"></i>
+            </div>
+
+            <!-- Regla de Oro de los Datos Objetivos -->
+            <div class="bg-white rounded-2xl p-6 border-l-4 border-l-teal-600 border border-slate-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-slate-800">Característica de Reproducibilidad e Independencia</h3>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Un dato objetivo <strong>puede ser confirmado por cualquier otro profesional de la salud</strong> utilizando los mismos parámetros e instrumentos, <em>independientemente de lo que el paciente sienta o perciba en ese instante</em>.
+                        </p>
+                    </div>
+                </div>
+                <span class="px-3.5 py-1.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200 text-xs font-bold shrink-0">
+                    Signos Clínicos • Cuantificables
+                </span>
+            </div>
+
+            <!-- Grid Interactivo de Ejemplos Clínicos Concretos -->
+            <div>
+                <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check text-uccuyo-600"></i>
+                    <span>Ejemplos Clínicos Concretos e Instrumentos de Medición</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    
+                    <!-- 1. Presión Arterial -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-uccuyo-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200">
+                                Tensiómetro / Esfigmomanómetro
+                            </span>
+                            <i class="fa-solid fa-gauge-high text-xl text-uccuyo-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Presión Arterial (PA)</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Medición cuantitativa de la fuerza que ejerce la sangre contra las paredes arteriales.
+                        </p>
+                        <div class="bg-slate-900 text-emerald-400 font-mono-clinical text-xs p-3 rounded-lg flex items-center justify-between">
+                            <span>Registros ejemplo:</span>
+                            <span class="font-bold text-amber-400">140/90 mmHg | 160/100 mmHg</span>
+                        </div>
+                    </div>
+
+                    <!-- 2. Temperatura Corporal -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+                                Termómetro Clínico
+                            </span>
+                            <i class="fa-solid fa-temperature-three-quarters text-xl text-amber-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Temperatura Corporal (T°)</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Valor numérico exacto en grados centígrados que constata normotermia, hipotermia o fiebre.
+                        </p>
+                        <div class="bg-slate-900 text-emerald-400 font-mono-clinical text-xs p-3 rounded-lg flex items-center justify-between">
+                            <span>Registro febril:</span>
+                            <span class="font-bold text-rose-400">38.5 °C</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Frecuencia Cardíaca y Respiratoria -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-1 rounded-md border border-teal-200">
+                                Cronómetro / Palpación / Vista
+                            </span>
+                            <i class="fa-solid fa-lungs text-xl text-teal-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Frecuencia Cardíaca y Respiratoria</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Latidos por minuto (lpm) y conteo de movimientos torácicos durante 15 o 60 segundos.
+                        </p>
+                        <div class="bg-slate-900 text-emerald-400 font-mono-clinical text-xs p-3 rounded-lg flex items-center justify-between">
+                            <span>Taquicardia / FR:</span>
+                            <span class="font-bold text-emerald-300">110 lpm | 22 rpm (en 60 s)</span>
+                        </div>
+                    </div>
+
+                    <!-- 4. Saturación de Oxígeno -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200">
+                                Oxímetro de Pulso (Saturometría)
+                            </span>
+                            <i class="fa-solid fa-percent text-xl text-sky-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Saturación de O₂ (SatO₂)</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Porcentaje de hemoglobina oxigenada en sangre arterial periférica medido por espectrofotometría.
+                        </p>
+                        <div class="bg-slate-900 text-emerald-400 font-mono-clinical text-xs p-3 rounded-lg flex items-center justify-between">
+                            <span>Hipoxemia detectada:</span>
+                            <span class="font-bold text-sky-400">SatO₂ 92%</span>
+                        </div>
+                    </div>
+
+                    <!-- 5. Aspecto de la Piel -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">
+                                Observación e Inspección Física
+                            </span>
+                            <i class="fa-solid fa-droplet text-xl text-purple-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Aspecto de la Piel y Tegumentos</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Signos físicos directamente observables y constatables por el equipo de enfermería.
+                        </p>
+                        <div class="bg-slate-100 text-slate-800 font-semibold text-xs p-3 rounded-lg border border-slate-300">
+                            Hallazgo: Piel pálida, fría y <strong>diaforética</strong> (sudoración profusa).
+                        </div>
+                    </div>
+
+                    <!-- 6. Laboratorio e Imágenes -->
+                    <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm hover:border-uccuyo-500 transition">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-200">
+                                Exámenes Complementarios
+                            </span>
+                            <i class="fa-solid fa-x-ray text-xl text-indigo-600"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base mb-1">Laboratorio y Estudios por Imágenes</h4>
+                        <p class="text-xs text-slate-600 mb-3">
+                            Resultados bioquímicos (glucemia, hemograma) y hallazgos objetivos en <strong>Rayos X o TAC</strong>.
+                        </p>
+                        <div class="bg-slate-100 text-slate-800 font-semibold text-xs p-3 rounded-lg border border-slate-300">
+                            Hallazgo: Infiltrado basal en Rx de tórax / Leucocitosis en sangre.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Navegación Inferior -->
+            <div class="flex justify-between">
+                <button onclick="switchTab('mod1')" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Módulo 1</span>
+                </button>
+                <button onclick="switchTab('mod3')" class="px-6 py-3 rounded-xl bg-uccuyo-600 hover:bg-uccuyo-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2">
+                    <span>Explorar Módulo 3: Datos Subjetivos</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+            <section id="mod3" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-indigo-800 via-indigo-700 to-purple-800 rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-indigo-100 text-xs font-semibold mb-3">
+                        <i class="fa-solid fa-comment-medical"></i> Módulo Formativo 03 • Cuidado Humanizado e Integral
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+                        Datos Subjetivos: La Voz y Vivencia del Paciente
+                    </h2>
+                    <p class="text-indigo-100 text-sm sm:text-base leading-relaxed">
+                        Son la expresión de la <strong>perspectiva, vivencia y sentir propio del paciente</strong> sobre su proceso de salud-enfermedad: incluyen opiniones, sentimientos, temores, dolor y sensaciones internas.
+                    </p>
+                </div>
+                <i class="fa-solid fa-comments text-9xl text-white/10 absolute -right-4 -bottom-4 pointer-events-none"></i>
+            </div>
+
+            <!-- Características y Regla de Registro Textual -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">¿Por qué son indispensables?</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        Aunque <strong>no pueden medirse directamente con instrumentos físicos ni constatarse a simple vista</strong>, los datos subjetivos son irreemplazables para brindar un <strong>cuidado humanizado e integral</strong>. Nadie más que el propio paciente puede experimentar la intensidad de su dolor, su angustia o sus náuseas.
+                    </p>
+                    <div class="bg-purple-50 border border-purple-200 rounded-xl p-3.5 text-xs text-purple-900">
+                        <strong>Correlación Clínica Clave:</strong> Un dato subjetivo orienta la búsqueda de signos objetivos. Por ejemplo, cuando el paciente refiere <em>"Me siento mareado y muy débil"</em>, el enfermero lo correlaciona y evalúa inmediatamente frente a una posible <strong>hipotensión arterial</strong> o hipoglucemia.
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-quote-left"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">Norma de Registro Clínico Legal y Ético</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                        En la hoja de evolución de enfermería, los datos subjetivos <strong>deben anotarse de forma textual, tal como los manifiesta el paciente, utilizando comillas (" ") y respetando su propio vocabulario</strong>, sin traducirlos ni distorsionarlos con juicios personales.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-rose-50 border border-rose-200 p-3 rounded-xl text-rose-900">
+                            <span class="font-bold block mb-1"><i class="fa-solid fa-circle-xmark mr-1"></i>Registro Incorrecto:</span>
+                            "El paciente exagera y dice que le duele un poco el estómago."
+                        </div>
+                        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-emerald-900">
+                            <span class="font-bold block mb-1"><i class="fa-solid fa-circle-check mr-1"></i>Registro Correcto:</span>
+                            Paciente refiere: <em>"Siento un dolor punzante en la boca del estómago"</em>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Casos y Expresiones Textuales del Paciente -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-microphone-lines text-indigo-600"></i>
+                    <span>Ejemplos Clínicos de Datos Subjetivos y su Articulación con el Cuidado</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex gap-3.5">
+                        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-sm">1</div>
+                        <div>
+                            <p class="text-sm font-bold text-indigo-950 italic mb-1">
+                                "Siento un dolor punzante en la boca del estómago"
+                            </p>
+                            <p class="text-xs text-slate-600">
+                                <strong>Dimensión:</strong> Percepción somática dolorosa epigástrica (localización y carácter del dolor expresados con el vocabulario propio del paciente).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex gap-3.5">
+                        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-sm">2</div>
+                        <div>
+                            <p class="text-sm font-bold text-indigo-950 italic mb-1">
+                                "Tengo mucha ansiedad y no puedo dormir por las noches"
+                            </p>
+                            <p class="text-xs text-slate-600">
+                                <strong>Dimensión:</strong> Estado emocional, temor e insomnio percibido. Permite planificar cuidados de escucha activa y confort ambiental.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex gap-3.5">
+                        <div class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-sm">3</div>
+                        <div>
+                            <p class="text-sm font-bold text-indigo-950 italic mb-1">
+                                "Me siento mareado y muy débil"
+                            </p>
+                            <p class="text-xs text-slate-600">
+                                <strong>Dimensión:</strong> Sensación interna de inestabilidad y astenia. Exige correlación inmediata con signos vitales (ej. descartar hipotensión arterial).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-xl bg-rose-50/70 border border-rose-200 flex gap-3.5">
+                        <div class="w-9 h-9 rounded-full bg-rose-600 text-white flex items-center justify-center shrink-0 font-bold text-sm">4</div>
+                        <div>
+                            <p class="text-sm font-bold text-rose-950 italic mb-1">
+                                "Siento una opresión muy fuerte en el pecho que me quema y me falta el aire"
+                            </p>
+                            <p class="text-xs text-rose-800">
+                                <strong>Dimensión Crítica (Guardia):</strong> Síntoma cardinal de alarma cardiovascular/respiratoria que debe integrarse de inmediato con la monitorización multiparamétrica.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Navegación Inferior -->
+            <div class="flex justify-between">
+                <button onclick="switchTab('mod2')" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Módulo 2</span>
+                </button>
+                <button onclick="switchTab('mod4')" class="px-6 py-3 rounded-xl bg-uccuyo-600 hover:bg-uccuyo-700 text-white font-bold text-sm shadow-md transition flex items-center gap-2">
+                    <span>Explorar Módulo 4: Herramientas de Recolección</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+            <section id="mod4" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-teal-800 via-teal-700 to-uccuyo-800 rounded-2xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-teal-100 text-xs font-semibold mb-3">
+                        <i class="fa-solid fa-stethoscope"></i> Módulo Formativo 04 • Competencias Clínicas Esenciales
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+                        Herramientas de Recolección: Observación Sistemática y Entrevista Terapéutica
+                    </h2>
+                    <p class="text-teal-100 text-sm sm:text-base leading-relaxed">
+                        Para recolectar datos con excelencia clínica, el profesional de enfermería domina dos pilares complementarios: el uso deliberado y agudo de los sentidos (<strong>Observación Sistemática</strong>) y la comunicación clínica humanizada (<strong>Entrevista Terapéutica</strong>).
+                    </p>
+                </div>
+                <i class="fa-solid fa-user-doctor text-9xl text-white/10 absolute -right-4 -bottom-4 pointer-events-none"></i>
+            </div>
+
+            <!-- Herramienta 1: Observación Sistemática (Los 4 Sentidos Clínicos) -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="mb-5">
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-600">Primera Herramienta Esencial</span>
+                    <h3 class="text-xl font-bold text-slate-800 mt-0.5">1. La Observación Sistemática: Uso Deliberado y Agudo de los Sentidos</h3>
+                    <p class="text-sm text-slate-600">Observar en enfermería no es simplemente "mirar de pasada", sino examinar con intencionalidad científica utilizando cada canal sensorial:</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Vista -->
+                    <div class="rounded-xl p-5 bg-sky-50/70 border border-sky-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 rounded-xl bg-sky-600 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fa-solid fa-eye"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2">Sentido de la Vista</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Inspección visual detallada del paciente y su dinámica corporal desde el primer contacto.
+                            </p>
+                        </div>
+                        <ul class="mt-4 space-y-1.5 text-xs text-sky-950 font-medium border-t border-sky-200 pt-3">
+                            <li><i class="fa-solid fa-check text-sky-600 mr-1.5"></i>Simetría torácica al respirar</li>
+                            <li><i class="fa-solid fa-check text-sky-600 mr-1.5"></i>Coloración de tegumentos (palidez, cianosis, ictericia)</li>
+                            <li><i class="fa-solid fa-check text-sky-600 mr-1.5"></i>Posturas antiálgicas y lesiones cutáneas</li>
+                        </ul>
+                    </div>
+
+                    <!-- Oído -->
+                    <div class="rounded-xl p-5 bg-indigo-50/70 border border-indigo-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fa-solid fa-ear-listen"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2">Sentido del Oído</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Auscultación directa o mediada por estetoscopio y percepción acústica clínica.
+                            </p>
+                        </div>
+                        <ul class="mt-4 space-y-1.5 text-xs text-indigo-950 font-medium border-t border-indigo-200 pt-3">
+                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>Ruidos respiratorios al inspirar y exhalar (sibilancias, estertores)</li>
+                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>Ruidos abdominales timpánicos o hidroaéreos</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tacto -->
+                    <div class="rounded-xl p-5 bg-amber-50/70 border border-amber-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 rounded-xl bg-amber-600 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fa-solid fa-hand-dots"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2">Sentido del Tacto</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Palpación superficial y profunda para detectar cambios tisulares y térmicos.
+                            </p>
+                        </div>
+                        <ul class="mt-4 space-y-1.5 text-xs text-amber-950 font-medium border-t border-amber-200 pt-3">
+                            <li><i class="fa-solid fa-check text-amber-600 mr-1.5"></i>Temperatura cutánea local o general en procesos infecciosos</li>
+                            <li><i class="fa-solid fa-check text-amber-600 mr-1.5"></i>Palpación de zonas de dolor, resistencia muscular o <strong>edema</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Olfato -->
+                    <div class="rounded-xl p-5 bg-emerald-50/70 border border-emerald-200 flex flex-col justify-between">
+                        <div>
+                            <div class="w-11 h-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                                <i class="fa-solid fa-wind"></i>
+                            </div>
+                            <h4 class="font-bold text-slate-800 text-base mb-2">Sentido del Olfato</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Identificación temprana de alteraciones biológicas o infecciosas a través de olores característicos.
+                            </p>
+                        </div>
+                        <ul class="mt-4 space-y-1.5 text-xs text-emerald-950 font-medium border-t border-emerald-200 pt-3">
+                            <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i>Detección de <strong>olores fétidos</strong> en heridas colonizadas</li>
+                            <li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i>Características olfativas en secreciones o drenajes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Herramienta 2: La Entrevista Terapéutica y Simulador de Reformulación -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <div class="lg:col-span-6 space-y-4">
+                        <span class="text-xs font-bold uppercase tracking-wider text-uccuyo-600">Segunda Herramienta Esencial</span>
+                        <h3 class="text-xl font-bold text-slate-800">2. La Entrevista Terapéutica</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            No es una charla informal ni un interrogatorio policial. Requiere <strong>comunicación asertiva, escucha activa y técnicas de reformulación</strong> para asegurar la comprensión fiel del mensaje del paciente sin caer en ambigüedades, manteniendo siempre un sólido <strong>perfil ético-profesional</strong>.
+                        </p>
+                        <div class="space-y-2.5 text-xs sm:text-sm">
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <i class="fa-solid fa-ear-deaf text-uccuyo-600 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">Escucha Activa y Empatía:</strong> Atender tanto al lenguaje verbal como al no verbal (gestos, silencios, tono de voz) sin interrumpir ni juzgar.
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <i class="fa-solid fa-rotate text-teal-600 mt-1"></i>
+                                <div>
+                                    <strong class="text-slate-800">Técnica de Reformulación:</strong> Verificar con el paciente lo que ha expresado para despejar cualquier ambigüedad antes de registrarlo en la Historia Clínica.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini-Simulador Interactivo de Entrevista Terapéutica -->
+                    <div class="lg:col-span-6 bg-slate-900 text-white rounded-2xl p-5 border border-slate-700 shadow-md">
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                                <span class="text-xs font-bold uppercase tracking-wider text-sky-300">Práctica Rápida: Técnica de Reformulación</span>
+                            </div>
+                            <span class="text-xs text-slate-400">Consultorio de Admisión</span>
+                        </div>
+
+                        <div class="bg-slate-800/90 rounded-xl p-4 border border-slate-700 mb-4">
+                            <div class="text-xs text-amber-300 font-semibold mb-1"><i class="fa-solid fa-user-injured mr-1"></i>El paciente comenta con gesto preocupado:</div>
+                            <p class="text-sm italic text-white">"Desde ayer siento como una pesadez rara acá en el costado después de comer y no sé si será grave..."</p>
+                        </div>
+
+                        <p class="text-xs text-slate-300 mb-2.5 font-medium">¿Cuál es la respuesta de enfermería que aplica <strong>escucha activa, reformulación y perfil ético-profesional</strong>?</p>
+
+                        <div class="space-y-2">
+                            <button onclick="checkInterviewDemo(1)" class="w-full text-left p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs transition flex items-start gap-2.5">
+                                <span class="font-bold text-sky-400">A)</span>
+                                <span>"No se preocupe, seguro comió pesado, ya se le va a pasar solo."</span>
+                            </button>
+                            <button onclick="checkInterviewDemo(2)" class="w-full text-left p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs transition flex items-start gap-2.5">
+                                <span class="font-bold text-sky-400">B)</span>
+                                <span>"Comprendo su inquietud. Para asegurarme de entender bien: ¿me indica con su mano dónde siente esa molestia y si aparece siempre tras las comidas?"</span>
+                            </button>
+                            <button onclick="checkInterviewDemo(3)" class="w-full text-left p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs transition flex items-start gap-2.5">
+                                <span class="font-bold text-sky-400">C)</span>
+                                <span>"Dígame rápido si es dolor o no porque tengo que llenar la planilla."</span>
+                            </button>
+                        </div>
+
+                        <div id="interview-demo-feedback" class="hidden mt-3 p-3 rounded-xl text-xs"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de Paso a la Gamificación -->
+            <div class="flex justify-between items-center bg-teal-900 text-white p-5 rounded-2xl shadow-md">
+                <div>
+                    <h4 class="font-bold text-base sm:text-lg">¿Listo para poner a prueba tu Juicio Clínico?</h4>
+                    <p class="text-xs sm:text-sm text-teal-200">Inicia las 3 estaciones prácticas para ejercitar y afianzar tu juicio clínico en la recolección y análisis de datos.</p>
+                </div>
+                <button onclick="switchTab('reto1')" class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm shadow-md transition flex items-center gap-2 shrink-0">
+                    <span>Iniciar Reto 1</span>
+                    <i class="fa-solid fa-play"></i>
+                </button>
+            </div>
+        </section>
+            <section id="reto1" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-bold mb-2">
+                            <i class="fa-solid fa-layer-group"></i> Estación Práctica 01
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-slate-800">Reto 1: Triaje de Datos — ¿Objetivo o Subjetivo?</h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Analiza cada hallazgo clínico en la bandeja de ingreso y clasifícalo como <strong>Dato Objetivo</strong> o <strong>Dato Subjetivo</strong>. Puedes arrastrar la tarjeta hacia los contenedores inferiores o usar los botones de selección rápida.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-100 px-4 py-3 rounded-xl border border-slate-200 shrink-0">
+                        <div class="text-right">
+                            <div class="text-xs text-slate-500 font-semibold">Progreso del Reto 1</div>
+                            <div class="text-lg font-extrabold text-uccuyo-700"><span id="r1-progress">0</span> / 10 clasificados</div>
+                        </div>
+                        <button onclick="resetReto1()" class="p-2.5 rounded-lg bg-white hover:bg-slate-200 text-slate-600 border border-slate-300 text-xs font-bold transition" title="Reiniciar Reto 1">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Activa para Clasificar -->
+                <div class="my-6">
+                    <div id="r1-active-stage" class="max-w-2xl mx-auto">
+                        <!-- Renderizado dinámicamente por JS -->
+                    </div>
+
+                    <!-- Retroalimentación Inmediata Reto 1 -->
+                    <div id="r1-feedback-box" class="hidden max-w-2xl mx-auto mt-4 p-4 rounded-xl border text-sm transition-all"></div>
+                </div>
+
+                <!-- Contenedores de Clasificación (Bandejas de Destino con Drag & Drop y Clic) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <!-- Bandeja Datos Objetivos -->
+                    <div id="drop-objetivo" 
+                         ondragover="allowDrop(event)" 
+                         ondrop="handleDrop(event, 'objetivo')"
+                         class="rounded-2xl border-2 border-dashed border-sky-300 bg-sky-50/50 p-5 transition hover:border-sky-500 min-h-[220px] flex flex-col">
+                        <div class="flex items-center justify-between pb-3 mb-3 border-b border-sky-200">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-lg bg-sky-600 text-white flex items-center justify-center">
+                                    <i class="fa-solid fa-ruler-combined"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-sky-950 text-base">Datos Objetivos</h3>
+                                    <p class="text-[11px] text-sky-700">Medibles, verificables, cuantitativos y signos observables</p>
+                                </div>
+                            </div>
+                            <span id="count-objetivo" class="px-2.5 py-1 rounded-full bg-sky-200 text-sky-900 font-bold text-xs">0</span>
+                        </div>
+                        <div id="list-objetivo" class="space-y-2 flex-grow">
+                            <p id="empty-objetivo" class="text-xs text-slate-400 italic text-center my-8">Los datos objetivos clasificados aparecerán aquí...</p>
+                        </div>
+                    </div>
+
+                    <!-- Bandeja Datos Subjetivos -->
+                    <div id="drop-subjetivo" 
+                         ondragover="allowDrop(event)" 
+                         ondrop="handleDrop(event, 'subjetivo')"
+                         class="rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50/50 p-5 transition hover:border-purple-500 min-h-[220px] flex flex-col">
+                        <div class="flex items-center justify-between pb-3 mb-3 border-b border-purple-200">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-lg bg-purple-600 text-white flex items-center justify-center">
+                                    <i class="fa-solid fa-comment-dots"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-purple-950 text-base">Datos Subjetivos</h3>
+                                    <p class="text-[11px] text-purple-700">Vivencias, percepciones, temores y síntomas entre comillas</p>
+                                </div>
+                            </div>
+                            <span id="count-subjetivo" class="px-2.5 py-1 rounded-full bg-purple-200 text-purple-900 font-bold text-xs">0</span>
+                        </div>
+                        <div id="list-subjetivo" class="space-y-2 flex-grow">
+                            <p id="empty-subjetivo" class="text-xs text-slate-400 italic text-center my-8">Los datos subjetivos clasificados aparecerán aquí...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <section id="reto2" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-100 text-teal-800 text-xs font-bold mb-2">
+                            <i class="fa-solid fa-hand-holding-medical"></i> Estación Práctica 02
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-slate-800">Reto 2: El Examen de los Sentidos en la Observación Sistemática</h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Identifica qué sentido clínico (<strong>Vista, Oído, Tacto u Olfato</strong>) es el principal responsable de recolectar cada hallazgo durante la valoración física del paciente.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-100 px-4 py-3 rounded-xl border border-slate-200 shrink-0">
+                        <div class="text-right">
+                            <div class="text-xs text-slate-500 font-semibold">Escenarios Resueltos</div>
+                            <div class="text-lg font-extrabold text-teal-700"><span id="r2-progress">0</span> / 5 escenarios</div>
+                        </div>
+                        <button onclick="resetReto2()" class="p-2.5 rounded-lg bg-white hover:bg-slate-200 text-slate-600 border border-slate-300 text-xs font-bold transition" title="Reiniciar Reto 2">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenedor Dinámico de Escenarios Sensoriales -->
+                <div id="r2-scenarios-container" class="space-y-4 mt-6">
+                    <!-- Renderizado por JavaScript -->
+                </div>
+            </div>
+        </section>
+            <section id="reto3" class="tab-content space-y-6">
+            <!-- Encabezado de Guardia de Emergencias -->
+            <div class="bg-slate-900 text-white rounded-2xl p-6 border border-slate-700 shadow-lg">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-slate-800">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold mb-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+                            Estación Práctica 03 • Shock Room / Guardia Central
+                        </div>
+                        <h2 class="text-2xl font-extrabold text-white">Caso Clínico Integrador: Paciente Monitorizado en Guardia</h2>
+                        <p class="text-sm text-slate-300 mt-1">
+                            Observa el monitor multiparamétrico en tiempo real, escucha la manifestación verbal del paciente y completa las 3 fases del razonamiento crítico antes de pasar a la etapa diagnóstica del PAE.
+                        </p>
+                    </div>
+                    <button onclick="resetReto3()" class="self-start lg:self-center px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 text-xs font-bold transition flex items-center gap-2 shrink-0">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Reiniciar Caso</span>
+                    </button>
+                </div>
+
+                <!-- Monitor Multiparamétrico y Escena del Paciente -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+                    
+                    <!-- Monitor Biomédico en Tiempo Real (7 columnas) -->
+                    <div class="lg:col-span-7 bg-black rounded-2xl p-5 border-2 border-slate-700 shadow-inner relative overflow-hidden">
+                        <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-2 mb-4 font-mono-clinical">
+                            <span><i class="fa-solid fa-desktop text-sky-400 mr-1.5"></i>MONITOR MULTIPARAMÉTRICO UCCUYO-M300</span>
+                            <span class="text-rose-400 font-bold animate-pulse"><i class="fa-solid fa-bell mr-1"></i>ALARMA CLÍNICA ACTIVA</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+                            <!-- Trazado de Onda SVG -->
+                            <div class="sm:col-span-2 space-y-4">
+                                <!-- Onda ECG -->
+                                <div class="bg-slate-950/90 p-3 rounded-xl border border-slate-800/80">
+                                    <div class="text-[10px] font-mono-clinical text-emerald-400 mb-1 flex justify-between">
+                                        <span>ECG DERIVACIÓN II</span>
+                                        <span>TAQUICARDIA SINUSAL</span>
+                                    </div>
+                                    <svg viewBox="0 0 300 60" class="w-full h-14 overflow-visible">
+                                        <path class="ecg-line" fill="none" stroke="#10b981" stroke-width="2.2"
+                                              d="M0,35 L25,35 L32,25 L38,35 L48,35 L52,45 L58,8 L64,52 L70,35 L82,22 L92,35 L130,35 L137,25 L143,35 L153,35 L157,45 L163,8 L169,52 L175,35 L187,22 L197,35 L235,35 L242,25 L248,35 L258,35 L262,45 L268,8 L274,52 L280,35 L300,35" />
+                                    </svg>
+                                </div>
+                                <!-- Onda Plestimografía SatO2 -->
+                                <div class="bg-slate-950/90 p-3 rounded-xl border border-slate-800/80">
+                                    <div class="text-[10px] font-mono-clinical text-sky-400 mb-1 flex justify-between">
+                                        <span>PLETH SPO2</span>
+                                        <span>HIPOXEMIA LEVE-MODERADA</span>
+                                    </div>
+                                    <svg viewBox="0 0 300 45" class="w-full h-10 overflow-visible">
+                                        <path class="ecg-line" fill="none" stroke="#38bdf8" stroke-width="2"
+                                              d="M0,35 Q15,5 30,25 T60,35 Q75,5 90,25 T120,35 Q135,5 150,25 T180,35 Q195,5 210,25 T240,35 Q255,5 270,25 T300,35" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <!-- Parámetros Numéricos del Monitor -->
+                            <div class="space-y-3 font-mono-clinical">
+                                <!-- FC -->
+                                <div class="bg-slate-950 p-3 rounded-xl border border-emerald-500/40 flex items-center justify-between">
+                                    <div>
+                                        <div class="text-[10px] text-emerald-400 font-bold">FC (lpm)</div>
+                                        <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 animate-ecg">110</div>
+                                    </div>
+                                    <i class="fa-solid fa-heart text-emerald-500 text-xl animate-ecg"></i>
+                                </div>
+                                <!-- PA -->
+                                <div class="bg-slate-950 p-3 rounded-xl border border-amber-500/40 flex items-center justify-between">
+                                    <div>
+                                        <div class="text-[10px] text-amber-400 font-bold">PNI (mmHg)</div>
+                                        <div class="text-xl sm:text-2xl font-extrabold text-amber-400">160/100</div>
+                                    </div>
+                                    <i class="fa-solid fa-gauge-high text-amber-500 text-lg"></i>
+                                </div>
+                                <!-- SatO2 -->
+                                <div class="bg-slate-950 p-3 rounded-xl border border-sky-500/40 flex items-center justify-between">
+                                    <div>
+                                        <div class="text-[10px] text-sky-400 font-bold">SpO₂ (%)</div>
+                                        <div class="text-2xl sm:text-3xl font-extrabold text-sky-400">92%</div>
+                                    </div>
+                                    <i class="fa-solid fa-lungs text-sky-400 text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Declaración Verbal y Estado del Paciente (5 columnas) -->
+                    <div class="lg:col-span-5 bg-slate-800/90 rounded-2xl p-5 border border-slate-700 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-400/40 text-rose-300 flex items-center justify-center text-2xl shrink-0">
+                                    <i class="fa-solid fa-user-injured"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs font-bold uppercase tracking-wider text-rose-300">Box 02 • Admisión de Guardia</span>
+                                    <h3 class="text-base font-bold text-white">Paciente Adulto en Observación</h3>
+                                </div>
+                            </div>
+
+                            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                                Al acercarte a realizar la valoración inicial de enfermería, observas los parámetros en el monitor mientras el paciente se lleva la mano al tórax y manifiesta verbalmente:
+                            </p>
+
+                            <div class="bg-rose-950/70 border-l-4 border-l-rose-500 border border-rose-800/80 rounded-xl p-4 my-3">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-rose-300 mb-1">
+                                    <i class="fa-solid fa-quote-left mr-1"></i>Declaración Verbal del Paciente:
+                                </div>
+                                <p class="text-base font-bold italic text-white leading-snug">
+                                    "Siento una opresión muy fuerte en el pecho que me quema y me falta el aire"
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 flex items-center gap-2.5">
+                            <i class="fa-solid fa-clipboard-user text-sky-400 text-base"></i>
+                            <span>Tu misión: Clasificar cada componente del caso, seleccionar el registro legal correcto y fundamentar tu juicio crítico.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FASES DE RESOLUCIÓN DEL CASO CLÍNICO -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Fase 1: Clasificación de los 4 Componentes del Caso -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-uccuyo-600 bg-sky-50 px-2.5 py-1 rounded-md border border-sky-200">Paso 1 de 3: Identificación de Datos</span>
+                            <i class="fa-solid fa-list-check text-slate-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">1. Clasifica los Hallazgos del Caso</h3>
+                        <p class="text-xs text-slate-600 mb-4">Determina la naturaleza exacta de cada dato recolectado en el Box de Guardia:</p>
+
+                        <div class="space-y-3 text-xs">
+                            <!-- Item 1 -->
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="font-bold text-slate-800 mb-2">• Frecuencia Cardíaca: <span class="font-mono-clinical text-emerald-700">110 lpm</span></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="selectCaseItem(0, 'objetivo')" id="c-item-0-obj" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-sky-50 transition">Dato Objetivo</button>
+                                    <button onclick="selectCaseItem(0, 'subjetivo')" id="c-item-0-sub" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-purple-50 transition">Dato Subjetivo</button>
+                                </div>
+                            </div>
+                            <!-- Item 2 -->
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="font-bold text-slate-800 mb-2">• Presión Arterial: <span class="font-mono-clinical text-amber-700">160/100 mmHg</span></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="selectCaseItem(1, 'objetivo')" id="c-item-1-obj" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-sky-50 transition">Dato Objetivo</button>
+                                    <button onclick="selectCaseItem(1, 'subjetivo')" id="c-item-1-sub" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-purple-50 transition">Dato Subjetivo</button>
+                                </div>
+                            </div>
+                            <!-- Item 3 -->
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="font-bold text-slate-800 mb-2">• Saturación O₂: <span class="font-mono-clinical text-sky-700">92%</span></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="selectCaseItem(2, 'objetivo')" id="c-item-2-obj" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-sky-50 transition">Dato Objetivo</button>
+                                    <button onclick="selectCaseItem(2, 'subjetivo')" id="c-item-2-sub" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-purple-50 transition">Dato Subjetivo</button>
+                                </div>
+                            </div>
+                            <!-- Item 4 -->
+                            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                                <div class="font-bold text-slate-800 mb-2">• <em>"Siento una opresión muy fuerte en el pecho que me quema y me falta el aire"</em></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="selectCaseItem(3, 'objetivo')" id="c-item-3-obj" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-sky-50 transition">Dato Objetivo</button>
+                                    <button onclick="selectCaseItem(3, 'subjetivo')" id="c-item-3-sub" class="py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-purple-50 transition">Dato Subjetivo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 2: Registro Clínico Correcto en la Hoja de Enfermería -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-2.5 py-1 rounded-md border border-purple-200">Paso 2 de 3: Registro Clínico Riguroso</span>
+                            <i class="fa-solid fa-file-signature text-slate-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">2. Registro Clínico en Historia Clínica</h3>
+                        <p class="text-xs text-slate-600 mb-4">Selecciona la nota de evolución de enfermería que cumple con el rigor técnico para registrar ambos tipos de datos:</p>
+
+                        <div class="space-y-3 text-xs">
+                            <button onclick="selectCaseRecord(1)" id="c-rec-1" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Opción A:</span>
+                                <span class="text-slate-600">Paciente parece estar sufriendo del corazón y tiene la presión bastante alta y poco oxígeno.</span>
+                            </button>
+
+                            <button onclick="selectCaseRecord(2)" id="c-rec-2" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Opción B:</span>
+                                <span class="text-slate-600">Se constatan signos vitales: FC 110 lpm, PA 160/100 mmHg, SatO₂ 92%. Paciente refiere textualmente: <em>"Siento una opresión muy fuerte en el pecho que me quema y me falta el aire"</em>.</span>
+                            </button>
+
+                            <button onclick="selectCaseRecord(3)" id="c-rec-3" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Opción C:</span>
+                                <span class="text-slate-600">Se anota únicamente FC 110 lpm, PA 160/100 mmHg y SatO₂ 92%, omitiendo lo que dice el paciente porque el dolor no se puede medir con aparatos.</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fase 3: Pregunta de Juicio Crítico -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-rose-700 bg-rose-50 px-2.5 py-1 rounded-md border border-rose-200">Paso 3 de 3: Juicio Crítico y Complementariedad</span>
+                            <i class="fa-solid fa-brain text-slate-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">3. Pregunta de Juicio Crítico</h3>
+                        <p class="text-xs font-semibold text-slate-700 mb-3">
+                            ¿Por qué es crucial registrar AMBOS tipos de datos (objetivos y subjetivos) antes de avanzar a la etapa diagnóstica del PAE?
+                        </p>
+
+                        <div class="space-y-3 text-xs">
+                            <button onclick="selectCaseCritical(1)" id="c-crit-1" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Fundamento A:</span>
+                                <span class="text-slate-600">Porque solo es un requisito burocrático para completar el formulario de admisión hospitalaria.</span>
+                            </button>
+
+                            <button onclick="selectCaseCritical(2)" id="c-crit-2" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Fundamento B:</span>
+                                <span class="text-slate-600">Porque los datos subjetivos reemplazan a los signos vitales cuando el paciente tiene mucho dolor en el pecho.</span>
+                            </button>
+
+                            <button onclick="selectCaseCritical(3)" id="c-crit-3" class="w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition">
+                                <span class="font-bold text-slate-800 block mb-1">Fundamento C:</span>
+                                <span class="text-slate-600">Porque se complementan e integran: la vivencia subjetiva orienta sobre el síntoma agudo (dolor opresivo/disnea) y los datos objetivos cuantifican la repercusión fisiológica (taquicardia, hipertensión, hipoxemia), permitiendo formular un diagnóstico de enfermería preciso, seguro y humanizado.</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="evaluateReto3()" class="mt-5 w-full py-3 px-4 rounded-xl bg-uccuyo-600 hover:bg-uccuyo-700 text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check-double"></i>
+                        <span>Validar Valoración y Juicio Clínico</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Panel de Retroalimentación Integral del Caso 3 -->
+            <div id="r3-feedback-panel" class="hidden rounded-2xl p-6 border shadow-sm transition-all"></div>
+        </section>
+
+        </section>
+    </main>
+
+    <!-- MODAL TUTORIAL: GUÍA DE USO DEL SIMULADOR -->
+    <div id="tutorial-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-xl border border-gray-200 flex flex-col max-h-[92vh] overflow-hidden animate-fadeIn">
+            
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-5 bg-accent rounded-full inline-block"></span>
+                    <h3 class="text-base font-bold text-gray-800">Guía de Uso del Simulador</h3>
+                </div>
+                <button onclick="closeTutorial()" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="overflow-y-auto custom-scroll pr-2 my-3 space-y-3.5 text-xs text-slate-600 leading-relaxed max-h-[480px]">
+                <!-- Propósito Académico e Institucional -->
+                <div class="p-3.5 bg-accent-light/80 rounded-xl border border-accent/25">
+                    <strong class="text-accent block mb-1 font-sans text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-bullseye text-sm"></i> Propósito Institucional y Marco Académico
+                    </strong>
+                    Diseñado para aspirantes a la <strong>Licenciatura en Enfermería de la Facultad de Ciencias Médicas (Universidad Católica de Cuyo - San Juan)</strong>. Su meta es ejercitar el <strong>pensamiento crítico</strong> durante la etapa de Valoración del Proceso de Atención de Enfermería (PAE), distinguiendo con rigor clínico entre <strong>datos objetivos</strong> (signos reproducibles, cuantificables y verificables mediante examen físico e instrumental biomédico) y <strong>datos subjetivos</strong> (vivencias, percepciones, sentimientos y síntomas del paciente), dominando las dos herramientas esenciales de recolección: la <strong>observación sistemática</strong> (uso agudo de los 4 sentidos) y la <strong>entrevista terapéutica</strong>.
+                </div>
+
+                <!-- Navegación y Herramientas Formativas -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-150 space-y-2">
+                    <strong class="text-primary block font-sans text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-compass text-sm"></i> Navegación y Herramientas Interactivas:
+                    </strong>
+                    <ul class="space-y-1.5 text-[11.5px] text-gray-600 pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-bars text-accent mt-0.5 shrink-0 text-xs"></i>
+                            <span><strong>Menú Lateral:</strong> Permite alternar de forma inmediata entre la Presentación General, los 4 módulos teóricos aplicados y las 3 estaciones de simulación clínica.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-users-viewfinder text-accent mt-0.5 shrink-0 text-xs"></i>
+                            <span><strong>Explorador de Fuentes (Módulo 1):</strong> Selector interactivo para contrastar la fuente primaria (el paciente consciente) y las tres secundarias (familia/acompañantes, historia clínica y entorno inmediato).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-gauge-high text-accent mt-0.5 shrink-0 text-xs"></i>
+                            <span><strong>Catálogo de Parámetros Clínicos (Módulo 2):</strong> Identificación de signos vitales objetivos (PA con tensiómetro, T° con termómetro, FC, FR en conteo torácico, SatO₂ en oxímetro, laboratorio e imágenes).</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-comments text-accent mt-0.5 shrink-0 text-xs"></i>
+                            <span><strong>Simulador de Entrevista y Reformulación (Módulos 3 y 4):</strong> Registro textual de citas (" ") y laboratorio de interacción dialógica con la paciente Carmen para ejercitar la reformulación asertiva sin juicios de valor.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-microchip text-accent mt-0.5 shrink-0 text-xs"></i>
+                            <span><strong>Monitor Multiparamétrico en Tiempo Real (Reto 3):</strong> Simulación de guardia con trazado ECG animado, visualización de ritmo cardíaco (110 lpm), curvas hemodinámicas y valores de saturación de oxígeno.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Desglose Modular y Contenidos Disciplinares -->
+                <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-150 space-y-2.5">
+                    <strong class="text-primary block font-sans text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-book-bookmark text-sm"></i> Estructura Modular y Contenidos Disciplinares:
+                    </strong>
+                    <ul class="space-y-2.5 text-[11px] text-gray-600 pl-1">
+                        <li class="border-b border-gray-200 pb-2">
+                            <strong class="text-gray-900 block text-xs">Presentación General:</strong>
+                            Marco epistemológico y fundamentación científica del cuidado humanizado. Presenta el PAE como un método estructurado, flexible y dinámico frente a la intuición o la rutina.
+                        </li>
+                        <li class="border-b border-gray-200 pb-2">
+                            <strong class="text-gray-900 block text-xs">Módulo 1: El Método Científico en el PAE y la Valoración:</strong>
+                            El rol protagónico del pensamiento crítico como toma de decisiones fundamentada en evidencia científica. La etapa de Valoración como piedra angular continua y organizada.
+                        </li>
+                        <li class="border-b border-gray-200 pb-2">
+                            <strong class="text-gray-900 block text-xs">Módulo 2: Datos Objetivos:</strong>
+                            Signos medibles, cuantificables y reproducibles, confirmables por cualquier profesional bajo idénticos parámetros con independencia de la vivencia subjetiva del paciente.
+                        </li>
+                        <li class="border-b border-gray-200 pb-2">
+                            <strong class="text-gray-900 block text-xs">Módulo 3: Datos Subjetivos:</strong>
+                            Perspectiva, vivencia y sentir propio del paciente sobre su estado de salud (opiniones, sentimientos, dolor y temores). Regla fundamental del registro textual entre comillas (" ") sin distorsiones ni suposiciones.
+                        </li>
+                        <li class="border-b border-gray-200 pb-2">
+                            <strong class="text-gray-900 block text-xs">Módulo 4: Herramientas de Recolección (Observación y Entrevista):</strong>
+                            Uso intencionado de los sentidos clínicos:
+                            <div class="mt-1 pl-2 border-l-2 border-accent space-y-0.5 text-gray-700">
+                                <div>• <strong>Vista:</strong> Simetría torácica, coloración de tegumentos, lesiones, postura.</div>
+                                <div>• <strong>Oído:</strong> Ruidos respiratorios normales o patológicos (estridor, sibilancias), ruidos hidroaéreos.</div>
+                                <div>• <strong>Tacto:</strong> Palpación de temperatura cutánea, edema con fóvea, pulsos, sensibilidad.</div>
+                                <div>• <strong>Olfato:</strong> Olores fétidos, secreciones con signos de infección o necrosis.</div>
+                            </div>
+                            Técnicas de entrevista: escucha activa, empatía y técnica de <em>reformulación</em> (devolver el mensaje con otras palabras para verificar comprensión y validar emociones).
+                        </li>
+                        <li>
+                            <strong class="text-gray-900 block text-xs">Estaciones de Simulación Clínica Práctica:</strong>
+                            <div class="mt-1 pl-2 border-l-2 border-teal-600 space-y-1 text-gray-700">
+                                <div>• <strong>Reto 1 (Triaje de Datos):</strong> Clasificación interactiva mediante arrastrar y soltar (drag & drop) o botones de selección rápida de 10 parámetros clínicos en bandejas de Datos Objetivos y Subjetivos con retroalimentación inmediata.</div>
+                                <div>• <strong>Reto 2 (Examen de los Sentidos):</strong> Resolución de 5 escenarios clínicos asociando el canal sensorial principal responsable de la recolección física.</div>
+                                <div>• <strong>Reto 3 (Shock Room / Guardia):</strong> Caso integrador con monitor multiparamétrico en tiempo real estructurado en 3 pasos: clasificación de datos, redacción ética/legal del registro clínico y fundamentación del juicio crítico complementario.</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Recomendaciones Pedagógicas UCCuyo -->
+                <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200 text-[11px] text-amber-900 space-y-1">
+                    <strong class="block font-bold text-amber-950 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb text-amber-700"></i> Recomendaciones Pedagógicas UCCuyo:
+                    </strong>
+                    <p>
+                        1. <strong>Complementariedad:</strong> Los datos objetivos y subjetivos no compiten ni se contraponen; se articulan para comprender integralmente la respuesta humana del sujeto de cuidado.<br>
+                        2. <strong>Rigor Ético en el Registro:</strong> Cita siempre de forma textual y entre comillas lo manifestado por el paciente; nunca asumas ni agregues juicios subjetivos personales.<br>
+                        3. <strong>Juicio Crítico en Guardia:</strong> Ante síntomas alarmantes (ej. dolor precordial), correlaciona de inmediato con la monitorización multiparamétrica objetiva para la toma de decisiones clínicas oportunas y seguras.
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-2 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-[10.5px] text-gray-400 font-medium">UCCuyo • Fundamentos de Enfermería</span>
+                <button onclick="closeTutorial()" class="bg-primary text-white font-semibold py-2 px-5 rounded-lg text-xs hover:opacity-90 transition shadow-sm">
+                    Entendido, Comenzar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Institucional Estándar -->
+    <footer class="bg-white border-t border-gray-200 mt-6">
+        <div class="max-w-6xl mx-auto px-4 py-3 text-center text-xs text-gray-500 font-semibold tracking-wide">
+            Desarrollado por vesalio - Todos los derechos reservados
+        </div>
+    </footer>
+
+    <!-- Lógica JavaScript Nativa -->
+    <script>
+        
+        /* ==========================================================
+           ESTADO GLOBAL DEL SIMULADOR Y GAMIFICACIÓN
+           ========================================================== */
+        const appState = {
+            reto1Solved: 0,
+            reto2Solved: 0,
+            reto3Completed: false
+        };
+
+        /* ==========================================================
+           NAVEGACIÓN ENTRE PESTAÑAS (MÓDULOS Y RETOS)
+           ========================================================== */
+        function switchTab(tabId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            
+            // Mostrar sección seleccionada
+            const target = document.getElementById(tabId);
+            if (target) target.classList.add('active');
+
+            // Lista de IDs de pestañas
+            const tabList = ['tab-inicio', 'mod1', 'mod2', 'mod3', 'mod4', 'reto1', 'reto2', 'reto3'];
+            tabList.forEach(id => {
+                const btn = document.getElementById('btn-' + id);
+                if (btn) {
+                    const icon = btn.querySelector('i');
+                    if (id === tabId) {
+                        btn.className = 'bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition flex items-center gap-2.5 shadow-xs';
+                        if (icon) {
+                            icon.classList.remove('text-[#436600]', 'text-teal-700', 'text-rose-600');
+                            icon.classList.add('text-white');
+                        }
+                    } else {
+                        btn.className = 'text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition flex items-center gap-2.5';
+                        if (icon) {
+                            icon.classList.remove('text-white');
+                            if (id.startsWith('reto')) {
+                                icon.classList.add(id === 'reto3' ? 'text-rose-600' : 'text-teal-700');
+                            } else {
+                                icon.classList.add('text-[#436600]');
+                            }
+                        }
+                    }
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ==========================================================
+           MÓDULO 1: EXPLORADOR DE FUENTES DE INFORMACIÓN
+           ========================================================== */
+        const sourcesData = {
+            primaria: {
+                title: "1. Fuente Primaria: El Paciente",
+                badge: "Fuente Principal Directa",
+                icon: "fa-user-check",
+                description: "El propio paciente es siempre la <strong>fuente primaria de información</strong> (cuando se encuentra consciente y orientado). Es quien vive directamente el proceso de salud-enfermedad, aporta sus percepciones subjetivas mediante la entrevista terapéutica y permite realizar la exploración física directa.",
+                example: "Ejemplo clínico: El paciente relata sus síntomas actuales, describe cómo comenzó su dolor y permite la medición de sus signos vitales."
+            },
+            familia: {
+                title: "2. Fuente Secundaria: Familia y Acompañantes",
+                badge: "Fuente Complementaria Clave",
+                icon: "fa-users",
+                description: "La familia y los acompañantes complementan la valoración aportando datos esenciales sobre el contexto cotidiano, hábitos previos o alergias. Cobran un rol protagónico cuando el paciente es un niño pequeño, presenta deterioro cognitivo o ingresa inconsciente a la guardia.",
+                example: "Ejemplo clínico: El familiar informa que el paciente tuvo un episodio de desmayo en el hogar hace 20 minutos y que es hipertenso medicado."
+            },
+            hc: {
+                title: "3. Fuente Secundaria: Historia Clínica y Registros",
+                badge: "Documentación Científica",
+                icon: "fa-folder-open",
+                description: "Revisión de antecedentes patológicos, evoluciones previas de enfermería y medicina, hojas de indicaciones farmacológicas, resultados bioquímicos de laboratorio e informes de estudios por imágenes (Rayos X, TAC).",
+                example: "Ejemplo clínico: Constatar en la Historia Clínica el valor previo de presión arterial basal, alergias medicamentosas o resultados de laboratorio recientes."
+            },
+            entorno: {
+                title: "4. Fuente Secundaria: El Entorno Inmediato",
+                badge: "Contexto Ambiental y Clínico",
+                icon: "fa-hospital-user",
+                description: "Observación de las condiciones del entorno físico, dispositivos terapéuticos conectados (sueros, drenajes, monitores), condiciones de higiene y seguridad de la unidad del paciente o de su domicilio.",
+                example: "Ejemplo clínico: Observar permeabilidad de vía periférica, funcionamiento del oxímetro o condiciones de ventilación de la habitación."
+            }
+        };
+
+        function selectSource(key) {
+            const data = sourcesData[key];
+            if (!data) return;
+
+            // Actualizar botones
+            ['primaria', 'familia', 'hc', 'entorno'].forEach(k => {
+                const btn = document.getElementById('btn-src-' + k);
+                if (k === key) {
+                    btn.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-uccuyo-600 text-white shadow-sm transition";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition";
+                }
+            });
+
+            // Renderizar detalle
+            const box = document.getElementById('source-detail-box');
+            box.innerHTML = `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-lg bg-uccuyo-600 text-white flex items-center justify-center">
+                            <i class="fa-solid ${data.icon}"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-base sm:text-lg">${data.title}</h4>
+                    </div>
+                    <span class="self-start sm:self-center text-xs font-bold px-3 py-1 rounded-full bg-sky-200/70 text-uccuyo-800">${data.badge}</span>
+                </div>
+                <p class="text-sm text-slate-700 leading-relaxed mb-3">${data.description}</p>
+                <div class="bg-white p-3 rounded-lg border border-sky-200 text-xs text-slate-600">
+                    <i class="fa-solid fa-stethoscope text-uccuyo-600 mr-1.5"></i>${data.example}
+                </div>
+            `;
+        }
+
+        /* ==========================================================
+           MÓDULO 4: MINI-DEMO DE ENTREVISTA TERAPÉUTICA
+           ========================================================== */
+        function checkInterviewDemo(option) {
+            const fb = document.getElementById('interview-demo-feedback');
+            fb.classList.remove('hidden', 'bg-emerald-900/80', 'border-emerald-500', 'text-emerald-100', 'bg-rose-900/80', 'border-rose-500', 'text-rose-100');
+            fb.classList.add('border');
+
+            if (option === 2) {
+                fb.classList.add('bg-emerald-900/80', 'border-emerald-500', 'text-emerald-100');
+                fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i><strong>¡Excelente intervención!</strong> Aplicas escucha activa, validas la emoción del paciente y utilizas la <strong>técnica de reformulación</strong> para precisar la localización y relación del síntoma sin caer en ambigüedades.`;
+            } else if (option === 1) {
+                fb.classList.add('bg-rose-900/80', 'border-rose-500', 'text-rose-100');
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 mr-1.5"></i><strong>Incorrecto:</strong> Minimizar lo que siente el paciente o hacer suposiciones al azar vulnera el pensamiento crítico y bloquea la comunicación terapéutica.`;
+            } else {
+                fb.classList.add('bg-rose-900/80', 'border-rose-500', 'text-rose-100');
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 mr-1.5"></i><strong>Incorrecto:</strong> Tratar la entrevista como un trámite mecánico impide el cuidado humanizado y genera datos ambiguos.`;
+            }
+        }
+
+        /* ==========================================================
+           RETO 1: TRIAJE DE DATOS (OBJETIVOS VS. SUBJETIVOS)
+           ========================================================== */
+        const reto1Items = [
+            {
+                id: 1,
+                text: "Frecuencia Cardíaca: 110 lpm",
+                type: "objetivo",
+                explanation: "Es un dato objetivo porque es cuantificable, medible en latidos por minuto y verificable por cualquier profesional."
+            },
+            {
+                id: 2,
+                text: '"Siento que me ahogo y me falta el aire"',
+                type: "subjetivo",
+                explanation: "Es un dato subjetivo: expresa la vivencia y percepción interna de disnea del paciente, registrada textualmente entre comillas."
+            },
+            {
+                id: 3,
+                text: "Temperatura corporal de 38.5 °C constatada con termómetro",
+                type: "objetivo",
+                explanation: "Es un dato objetivo obtenido mediante un instrumento biomédico (termómetro), totalmente medible y verificable."
+            },
+            {
+                id: 4,
+                text: '"Tengo mucho miedo de operarme mañana"',
+                type: "subjetivo",
+                explanation: "Es un dato subjetivo: manifiesta un temor y sentimiento propio del paciente, indispensable para el cuidado humanizado."
+            },
+            {
+                id: 5,
+                text: "Piel pálida, fría y diaforética (sudorosa)",
+                type: "objetivo",
+                explanation: "Es un dato objetivo recolectado mediante la observación sistemática (vista y tacto), confirmable por el equipo de salud."
+            },
+            {
+                id: 6,
+                text: "Saturación de oxígeno (SatO₂) de 92%",
+                type: "objetivo",
+                explanation: "Es un dato objetivo cuantitativo medido mediante oximetría de pulso."
+            },
+            {
+                id: 7,
+                text: '"Siento un dolor punzante en la boca del estómago"',
+                type: "subjetivo",
+                explanation: "Es un dato subjetivo: el dolor y sus características percibidas pertenecen al sentir interno del paciente y se anotan con su propio vocabulario."
+            },
+            {
+                id: 8,
+                text: "Presión Arterial de 140/90 mmHg medida con tensiómetro",
+                type: "objetivo",
+                explanation: "Es un dato objetivo cuantificable obtenido con instrumento biomédico (tensiómetro)."
+            },
+            {
+                id: 9,
+                text: '"Tengo mucha ansiedad y no puedo dormir por las noches"',
+                type: "subjetivo",
+                explanation: "Es un dato subjetivo sobre el estado emocional y la percepción del sueño expresada por el paciente."
+            },
+            {
+                id: 10,
+                text: "Hallazgo de consolidación pulmonar en Rayos X / TAC de tórax",
+                type: "objetivo",
+                explanation: "Es un dato objetivo verificable proveniente de estudios complementarios por imágenes."
+            }
+        ];
+
+        let r1CurrentIndex = 0;
+        let r1ClassifiedCount = 0;
+        let r1ObjCount = 0;
+        let r1SubCount = 0;
+
+        function renderReto1Stage() {
+            const stage = document.getElementById('r1-active-stage');
+            document.getElementById('r1-progress').textContent = r1ClassifiedCount;
+
+            if (r1CurrentIndex >= reto1Items.length) {
+                stage.innerHTML = `
+                    <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 text-center shadow-sm">
+                        <div class="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center text-2xl mx-auto mb-3">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-emerald-950">¡Triaje de Datos Completado!</h3>
+                        <p class="text-sm text-emerald-800 mt-1 mb-4">
+                            Has clasificado los 10 parámetros clínicos diferenciando con precisión técnica los hallazgos objetivos de las expresiones subjetivas.
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-3">
+                            <button onclick="resetReto1()" class="px-4 py-2 rounded-xl bg-white border border-emerald-300 text-emerald-800 font-bold text-xs hover:bg-emerald-100 transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i>Practicar de Nuevo
+                            </button>
+                            <button onclick="switchTab('reto2')" class="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow transition">
+                                Avanzar al Reto 2: Examen de Sentidos <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const item = reto1Items[r1CurrentIndex];
+            stage.innerHTML = `
+                <div draggable="true" ondragstart="handleDragStart(event)" id="draggable-card"
+                     class="bg-white border-2 border-uccuyo-500 rounded-2xl p-6 shadow-md cursor-grab active:cursor-grabbing transition hover:shadow-lg">
+                    <div class="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">
+                        <span><i class="fa-solid fa-grip-vertical mr-1.5 text-uccuyo-500"></i>Parámetro Clínico #${r1CurrentIndex + 1} de ${reto1Items.length}</span>
+                        <span>Arrastra o selecciona abajo</span>
+                    </div>
+                    <p class="text-lg sm:text-xl font-extrabold text-slate-800 text-center my-4 py-3 px-4 bg-slate-50 rounded-xl border border-slate-200">
+                        ${item.text}
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+                        <button onclick="classifyReto1('objetivo')" class="py-3 px-4 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            <span>Clasificar como OBJETIVO</span>
+                        </button>
+                        <button onclick="classifyReto1('subjetivo')" class="py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm shadow-sm transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            <span>Clasificar como SUBJETIVO</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData("text/plain", r1CurrentIndex);
+        }
+
+        function allowDrop(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e, category) {
+            e.preventDefault();
+            if (r1CurrentIndex < reto1Items.length) {
+                classifyReto1(category);
+            }
+        }
+
+        function classifyReto1(chosenType) {
+            if (r1CurrentIndex >= reto1Items.length) return;
+            const currentItem = reto1Items[r1CurrentIndex];
+            const isCorrect = (chosenType === currentItem.type);
+            const fbBox = document.getElementById('r1-feedback-box');
+            fbBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-900', 'bg-rose-50', 'border-rose-300', 'text-rose-900');
+
+            if (isCorrect) {
+                appState.reto1Solved++;
+                fbBox.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                fbBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i><strong>¡Correcto!</strong> ${currentItem.explanation}`;
+            } else {
+                fbBox.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                fbBox.innerHTML = `<i class="fa-solid fa-circle-exclamation text-rose-600 mr-1.5"></i><strong>Atención formativa:</strong> Este hallazgo corresponde a un <strong>Dato ${currentItem.type.toUpperCase()}</strong>. ${currentItem.explanation}`;
+            }
+
+            // Agregar el ítem a la columna verdadera para que el estudiante visualice el cuadro final correcto
+            addCardToColumn(currentItem, isCorrect);
+
+            r1CurrentIndex++;
+            r1ClassifiedCount++;
+
+            
+
+            
+            renderReto1Stage();
+        }
+
+        function addCardToColumn(item, wasCorrect) {
+            const targetList = document.getElementById('list-' + item.type);
+            const emptyMsg = document.getElementById('empty-' + item.type);
+            if (emptyMsg) emptyMsg.style.display = 'none';
+
+            if (item.type === 'objetivo') {
+                r1ObjCount++;
+                document.getElementById('count-objetivo').textContent = r1ObjCount;
+            } else {
+                r1SubCount++;
+                document.getElementById('count-subjetivo').textContent = r1SubCount;
+            }
+
+            const badgeColor = wasCorrect ? 'text-emerald-600' : 'text-amber-600';
+            const icon = wasCorrect ? 'fa-check-circle' : 'fa-circle-info';
+
+            const el = document.createElement('div');
+            el.className = "p-3 rounded-xl bg-white border border-slate-200 shadow-sm text-xs flex items-center justify-between gap-2";
+            el.innerHTML = `
+                <span class="font-semibold text-slate-800">${item.text}</span>
+                <i class="fa-solid ${icon} ${badgeColor} shrink-0" title="${wasCorrect ? 'Clasificado correctamente' : 'Reubicado con corrección formativa'}"></i>
+            `;
+            targetList.prepend(el);
+        }
+
+        function resetReto1() {
+            r1CurrentIndex = 0;
+            r1ClassifiedCount = 0;
+            r1ObjCount = 0;
+            r1SubCount = 0;
+            appState.reto1Solved = 0;
+            document.getElementById('count-objetivo').textContent = '0';
+            document.getElementById('count-subjetivo').textContent = '0';
+            document.getElementById('list-objetivo').innerHTML = '<p id="empty-objetivo" class="text-xs text-slate-400 italic text-center my-8">Los datos objetivos clasificados aparecerán aquí...</p>';
+            document.getElementById('list-subjetivo').innerHTML = '<p id="empty-subjetivo" class="text-xs text-slate-400 italic text-center my-8">Los datos subjetivos clasificados aparecerán aquí...</p>';
+            document.getElementById('r1-feedback-box').classList.add('hidden');
+            
+            renderReto1Stage();
+        }
+
+        /* ==========================================================
+           RETO 2: EL EXAMEN DE LOS SENTIDOS (OBSERVACIÓN SISTEMÁTICA)
+           ========================================================== */
+        const reto2Scenarios = [
+            {
+                id: 0,
+                finding: "Constatar simetría torácica durante los movimientos respiratorios, coloración pálida o cianótica de tegumentos, posturas antiálgicas y presencia de lesiones cutáneas.",
+                correctSense: "vista",
+                explanation: "El sentido de la VISTA permite inspeccionar la simetría torácica, la coloración de piel y mucosas, las posturas corporales y las lesiones externas."
+            },
+            {
+                id: 1,
+                finding: "Identificar ruidos respiratorios anormales al inspirar y exhalar o percibir ruidos abdominales timpánicos durante la exploración.",
+                correctSense: "oido",
+                explanation: "El sentido del OÍDO (directo o asistido con estetoscopio) es responsable de valorar los ruidos respiratorios al inspirar/exhalar y los sonidos abdominales timpánicos."
+            },
+            {
+                id: 2,
+                finding: "Detectar incremento de la temperatura cutánea local en un proceso infeccioso o evaluar dolor localizado y presencia de edema (fóvea) en miembros inferiores.",
+                correctSense: "tacto",
+                explanation: "El sentido del TACTO mediante la palpación permite percibir cambios térmicos de la piel en infecciones, edema tisular y sensibilidad dolorosa a la presión."
+            },
+            {
+                id: 3,
+                finding: "Detectar de manera temprana olores fétidos provenientes de una herida quirúrgica complicada o de secreciones biológicas.",
+                correctSense: "olfato",
+                explanation: "El sentido del OLFATO alerta rápidamente sobre procesos infecciosos o necrosis al percibir olores fétidos en heridas o secreciones."
+            },
+            {
+                id: 4,
+                finding: "Contar la frecuencia respiratoria observando la elevación y descenso del tórax durante 60 segundos y verificar diaforesis (sudoración) visible en la frente del paciente.",
+                correctSense: "vista",
+                explanation: "El sentido de la VISTA permite contabilizar las excursiones torácicas por minuto y observar signos físicos directos como la sudoración profusa."
+            }
+        ];
+
+        let r2Resolved = [false, false, false, false, false];
+
+        function renderReto2() {
+            const container = document.getElementById('r2-scenarios-container');
+            container.innerHTML = '';
+
+            reto2Scenarios.forEach((sc, idx) => {
+                const card = document.createElement('div');
+                card.className = "p-5 rounded-2xl bg-slate-50 border border-slate-200 transition";
+                card.innerHTML = `
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div class="space-y-1 max-w-2xl">
+                            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Escenario Clínico #0${idx + 1}</span>
+                            <p class="text-sm sm:text-base font-bold text-slate-800">${sc.finding}</p>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 shrink-0" id="r2-btns-${idx}">
+                            <button onclick="answerReto2(${idx}, 'vista')" class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-sky-50 border border-slate-300 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-eye text-sky-600"></i> Vista
+                            </button>
+                            <button onclick="answerReto2(${idx}, 'oido')" class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-indigo-50 border border-slate-300 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-ear-listen text-indigo-600"></i> Oído
+                            </button>
+                            <button onclick="answerReto2(${idx}, 'tacto')" class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-amber-50 border border-slate-300 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-hand-dots text-amber-600"></i> Tacto
+                            </button>
+                            <button onclick="answerReto2(${idx}, 'olfato')" class="px-3.5 py-2.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-300 text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-wind text-emerald-600"></i> Olfato
+                            </button>
+                        </div>
+                    </div>
+                    <div id="r2-fb-${idx}" class="hidden mt-3 p-3 rounded-xl text-xs border"></div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('r2-progress').textContent = r2Resolved.filter(Boolean).length;
+        }
+
+        function answerReto2(idx, chosenSense) {
+            if (r2Resolved[idx]) return; // Evitar doble puntuación en un escenario ya acertado
+
+            const sc = reto2Scenarios[idx];
+            const fb = document.getElementById('r2-fb-' + idx);
+            fb.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'text-emerald-900', 'bg-rose-50', 'border-rose-300', 'text-rose-900');
+
+            if (chosenSense === sc.correctSense) {
+                r2Resolved[idx] = true;
+                appState.reto2Solved++;
+                fb.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900');
+                fb.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 mr-1.5"></i><strong>¡Correcto!</strong> ${sc.explanation}`;
+
+                // Bloquear botones de este escenario
+                const btnGroup = document.getElementById('r2-btns-' + idx);
+                btnGroup.querySelectorAll('button').forEach(b => {
+                    b.disabled = true;
+                    b.classList.add('opacity-50', 'cursor-not-allowed');
+                });
+            } else {
+                fb.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                fb.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 mr-1.5"></i><strong>Revisa tu observación sistemática:</strong> Piensa qué canal sensorial capta directamente este fenómeno físico e inténtalo de nuevo.`;
+            }
+
+            const solvedCount = r2Resolved.filter(Boolean).length;
+            document.getElementById('r2-progress').textContent = solvedCount;
+
+            
+
+            
+        }
+
+        function resetReto2() {
+            r2Resolved = [false, false, false, false, false];
+            appState.reto2Solved = 0;
+            
+            renderReto2();
+        }
+
+        /* ==========================================================
+           RETO 3: CASO CLÍNICO MONITORIZADO EN GUARDIA
+           ========================================================== */
+        let r3Selections = {
+            items: [null, null, null, null], // Correcto: ['objetivo', 'objetivo', 'objetivo', 'subjetivo']
+            record: null,                    // Correcto: 2
+            critical: null                   // Correcto: 3
+        };
+
+        function selectCaseItem(itemIdx, type) {
+            r3Selections.items[itemIdx] = type;
+            const btnObj = document.getElementById(`c-item-${itemIdx}-obj`);
+            const btnSub = document.getElementById(`c-item-${itemIdx}-sub`);
+
+            btnObj.className = "py-1.5 px-3 rounded-lg border text-xs font-semibold transition " +
+                (type === 'objetivo' ? "bg-sky-600 text-white border-sky-600 shadow-sm" : "border-slate-300 bg-white text-slate-700 hover:bg-sky-50");
+
+            btnSub.className = "py-1.5 px-3 rounded-lg border text-xs font-semibold transition " +
+                (type === 'subjetivo' ? "bg-purple-600 text-white border-purple-600 shadow-sm" : "border-slate-300 bg-white text-slate-700 hover:bg-purple-50");
+        }
+
+        function selectCaseRecord(optionNum) {
+            r3Selections.record = optionNum;
+            [1, 2, 3].forEach(n => {
+                const btn = document.getElementById('c-rec-' + n);
+                if (n === optionNum) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-uccuyo-600 bg-sky-50/80 transition shadow-sm";
+                } else {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition";
+                }
+            });
+        }
+
+        function selectCaseCritical(optionNum) {
+            r3Selections.critical = optionNum;
+            [1, 2, 3].forEach(n => {
+                const btn = document.getElementById('c-crit-' + n);
+                if (n === optionNum) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-uccuyo-600 bg-sky-50/80 transition shadow-sm";
+                } else {
+                    btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition";
+                }
+            });
+        }
+
+        function evaluateReto3() {
+            const panel = document.getElementById('r3-feedback-panel');
+            panel.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-300', 'bg-amber-50', 'border-amber-300');
+
+            // Verificar que haya respondido todos los campos
+            if (r3Selections.items.includes(null) || !r3Selections.record || !r3Selections.critical) {
+                panel.classList.add('bg-amber-50', 'border-amber-300');
+                panel.innerHTML = `
+                    <div class="flex items-center gap-3 text-amber-900">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl"></i>
+                        <div class="text-sm">
+                            <strong>Valoración Incompleta:</strong> Por favor, clasifica los 4 componentes del Paso 1, selecciona una opción de registro en el Paso 2 y responde la pregunta de juicio crítico en el Paso 3 antes de validar.
+                        </div>
+                    </div>
+                `;
+                panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const expectedItems = ['objetivo', 'objetivo', 'objetivo', 'subjetivo'];
+            let feedbackDetails = [];
+            let allCorrect = true;
+
+            // Evaluar Paso 1
+            let p1Correct = 0;
+            expectedItems.forEach((exp, i) => {
+                if (r3Selections.items[i] === exp) {
+                    p1Correct++;
+                }
+            });
+
+            if (p1Correct === 4) {
+                feedbackDetails.push(`<li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i><strong>Paso 1 (Correcto):</strong> Clasificaste con exactitud los 3 parámetros biomédicos del monitor (FC 110 lpm, PA 160/100 mmHg, SatO₂ 92%) como <strong>Datos Objetivos</strong> y el relato de opresión torácica como <strong>Dato Subjetivo</strong>.</li>`);
+            } else {
+                allCorrect = false;
+                feedbackDetails.push(`<li><i class="fa-solid fa-circle-info text-amber-600 mr-1.5"></i><strong>Paso 1 (Revisar):</strong> Recuerda que FC (110 lpm), PA (160/100 mmHg) y SatO₂ (92%) son mediciones directas del monitor biomédico (Objetivos), mientras que <em>"Siento una opresión muy fuerte..."</em> es la vivencia sintomática del paciente (Subjetivo).</li>`);
+            }
+
+            // Evaluar Paso 2
+            if (r3Selections.record === 2) {
+                feedbackDetails.push(`<li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i><strong>Paso 2 (Correcto):</strong> Elegiste el registro clínico riguroso: consigna las cifras exactas de los signos vitales y transcribe textualmente entre comillas las palabras del paciente.</li>`);
+            } else {
+                allCorrect = false;
+                feedbackDetails.push(`<li><i class="fa-solid fa-xmark text-rose-600 mr-1.5"></i><strong>Paso 2 (Revisar):</strong> La Opción B es la adecuada porque documenta los valores cuantitativos exactos y cita textualmente entre comillas la manifestación del paciente sin omitirla ni añadir interpretaciones subjetivas del profesional.</li>`);
+            }
+
+            // Evaluar Paso 3
+            if (r3Selections.critical === 3) {
+                feedbackDetails.push(`<li><i class="fa-solid fa-check text-emerald-600 mr-1.5"></i><strong>Paso 3 (Correcto):</strong> Excelente juicio crítico. Comprendes que los datos objetivos y subjetivos no compiten entre sí, sino que se articulan para sustentar la etapa diagnóstica del PAE con base científica y humana.</li>`);
+            } else {
+                allCorrect = false;
+                feedbackDetails.push(`<li><i class="fa-solid fa-xmark text-rose-600 mr-1.5"></i><strong>Paso 3 (Revisar):</strong> Revisa la fundamentación clínica: registrar ambos tipos de datos es indispensable porque el síntoma subjetivo alerta sobre la vivencia dolorosa/disneica y los signos objetivos demuestran el compromiso hemodinámico y respiratorio real.</li>`);
+            }
+
+            if (allCorrect) {
+                panel.classList.add('bg-emerald-50', 'border-emerald-300');
+                panel.innerHTML = `
+                    <div class="flex items-center gap-3 pb-4 border-b border-emerald-200">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-extrabold text-emerald-950">¡Resolución Sobresaliente del Caso de Guardia!</h4>
+                            <p class="text-xs text-emerald-800">Has articulado con rigor científico los datos del monitor multiparamétrico y la manifestación subjetiva del paciente.</p>
+                        </div>
+                    </div>
+                    <ul class="mt-4 space-y-2 text-xs text-emerald-950 leading-relaxed">
+                        ${feedbackDetails.join('')}
+                    </ul>
+                `;
+            } else {
+                panel.classList.add('bg-amber-50', 'border-amber-300');
+                panel.innerHTML = `
+                    <div class="flex items-center gap-3 pb-3 border-b border-amber-200">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-clipboard-question"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-extrabold text-amber-950">Análisis Formativo del Caso</h4>
+                            <p class="text-xs text-amber-800">Corrige los pasos señalados abajo y vuelve a presionar "Validar Valoración y Juicio Clínico".</p>
+                        </div>
+                    </div>
+                    <ul class="mt-3 space-y-2 text-xs text-amber-950 leading-relaxed">
+                        ${feedbackDetails.join('')}
+                    </ul>
+                `;
+            }
+
+            panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetReto3() {
+            r3Selections = {
+                items: [null, null, null, null],
+                record: null,
+                critical: null
+            };
+            
+            [0, 1, 2, 3].forEach(i => {
+                document.getElementById(`c-item-${i}-obj`).className = "py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-sky-50 transition";
+                document.getElementById(`c-item-${i}-sub`).className = "py-1.5 px-3 rounded-lg border border-slate-300 bg-white font-semibold text-slate-700 hover:bg-purple-50 transition";
+            });
+            [1, 2, 3].forEach(n => {
+                document.getElementById('c-rec-' + n).className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition";
+                document.getElementById('c-crit-' + n).className = "w-full text-left p-3.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 transition";
+            });
+            document.getElementById('r3-feedback-panel').classList.add('hidden');
+            
+        }
+
+        
+
+        function openTutorial() {
+            const modal = document.getElementById('tutorial-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeTutorial() {
+            const modal = document.getElementById('tutorial-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        /* ==========================================================
+           INICIALIZACIÓN AL CARGAR LA VENTANA
+           ========================================================== */
+        window.onload = function () {
+            selectSource('primaria');
+            renderReto1Stage();
+            renderReto2();
+            
+        };
+    
+    </script>
+</body>
+</html>
